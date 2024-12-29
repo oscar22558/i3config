@@ -1,0 +1,187 @@
+# set modifier
+set $super Mod4
+set $alt Mod1
+
+# set font
+font pango: Poppins, Ionicons 9, bootstrap-icons Regular 11
+
+# font pango: "FiraCode", Poppins, "Fira Sans Semibold", "Font Awesome 6 Free", FontAwesome, Roboto, Helvetica, Arial, sans-serif Regular 11
+
+# use mouse+$super to drag floating windows to their wanted position
+floating_modifier $super
+
+# autostart
+exec --no-startup-id xinput set-prop "pointer:Logitech USB Receiver" "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 0.46
+exec --no-startup-id xrandr --output DP-0 --primary
+exec --no-startup-id xrandr --output HDMI-0 --auto --right-of DP-0
+exec --no-startup-id hsetroot -cover ~/.wallpaper.png
+#exec --no-startup-id vmware-user
+exec --no-startup-id xset s off
+exec --no-startup-id xset -dpms
+exec --no-startup-id xset s noblank
+exec --no-startup-id /usr/lib/gsd-xsettings
+#exec --no-startup-id picom -b --config $HOME/.config/picom/picom.conf
+
+exec --no-startup-id vesktop
+#exec --no-startup-id ibus-daemon -rxRd
+exec --no-startup-id fcitx5
+
+workspace 1:1 output DP-0
+workspace 2:2 output HDMI-0
+
+# start a terminal
+bindsym $super+Return exec i3-sensible-terminal
+
+# start dmenu (a program launcher)
+#bindsym $super+d exec i3-dmenu-desktop --dmenu="dmenu -i -b \
+#-fn 'Poppins:size=10' -nb '#141c21' -nf '#93a1a1' \
+#-sb '#289c93' -sf '#141c21'"
+bindsym $super+Control+Return exec "rofi -modi drun,run -show drun -show-icons"
+
+# window selector
+bindsym $super+control+w exec rofi -show window -show-icons
+
+# common apps keybinds
+bindsym Print exec scrot 'screenshot_%a-%d%b%y_%H.%M.png' -e 'xdg-open ~/$f'
+bindsym $super+control+l exec i3lock -i ~/.lock.png
+bindsym $super+b exec brave
+bindsym $super+e exec nautilus --new-window $HOME
+bindsym $super+shift+v exec code
+bindsym $super+shift+r exec "rofi -show run"
+
+# change volume and brightness
+# bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+
+# bindsym XF86AudioLowerVolume exec amixer -q set Master 5%-
+# bindsym XF86AudioMute exec amixer set Master toggle
+# bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
+# bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+
+
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# kill focused window
+bindsym $super+q kill
+bindsym $alt+F4 kill
+
+# change focus
+bindsym $super+Left focus left
+bindsym $super+Down focus down
+bindsym $super+Up focus up
+bindsym $super+Right focus right
+
+# move focused window
+bindsym $super+Shift+Left move left
+bindsym $super+Shift+Down move down
+bindsym $super+Shift+Up move up
+bindsym $super+Shift+Right move right
+
+# move container/workspace to output
+bindsym $super+shift+x move workspace to output next
+
+# split in horizontal or vertical orientation
+bindsym $super+h split h
+bindsym $super+v split v
+
+# change container layout (stacked, tabbed, toggle split)
+# bindsym $super+s layout toggle
+bindsym $super+a layout tabbed
+bindsym $super+z layout stacking
+bindsym $super+s layout toggle split
+
+# enter fullscreen mode for the focused container
+bindsym $super+f fullscreen toggle
+
+# toggle tiling / floating
+bindsym $super+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $super+Control+space focus mode_toggle
+
+# focus the parent container
+# bindsym $super+q focus parent
+
+# focus the child container
+# bindsym $super+m focus child
+
+# switch to workspace
+bindsym $super+Control+Right workspace next
+bindsym $super+Control+Left workspace prev
+bindsym $super+1 workspace 1:1
+bindsym $super+2 workspace 2:2
+bindsym $super+3 workspace 3:3
+bindsym $super+4 workspace 4:4
+bindsym $super+5 workspace 5:5
+bindsym $super+6 workspace 6:6
+bindsym $super+7 workspace 7:7
+bindsym $super+8 workspace 8:8
+
+# move focused container to workspace
+bindsym $super+Shift+1 move container to workspace 1:1
+bindsym $super+Shift+2 move container to workspace 2:2
+bindsym $super+Shift+3 move container to workspace 3:3
+bindsym $super+Shift+4 move container to workspace 4:4
+bindsym $super+Shift+5 move container to workspace 5:5
+bindsym $super+Shift+6 move container to workspace 6:6
+bindsym $super+Shift+7 move container to workspace 7:7
+bindsym $super+Shift+8 move container to workspace 8:8
+
+# reload the configuration file
+bindsym $super+Control+c reload
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $super+Control+r exec "i3-msg restart"
+
+# exit i3
+bindsym $super+Control+q exec "i3-nagbar -t warning -m 'Really, exit?' \
+-b 'Yes' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+	bindsym Left resize shrink width 5 px or 5 ppt
+	bindsym Down resize shrink height 5 px or 5 ppt
+	bindsym Up resize grow height 5 px or 5 ppt
+	bindsym Right resize grow width 5 px or 5 ppt
+	bindsym Return mode "default"
+	}
+bindsym $super+r mode "resize"
+
+# panel
+bar {
+	status_command i3status
+	position top
+	workspace_min_width 24
+	padding 2px 8px 2px 8px
+	strip_workspace_numbers yes
+
+	colors {
+	background #322640
+	statusline #322640
+	separator #322640
+
+	# colour of border, background, and text
+	focused_workspace #031529 #d12f2c #d0d9d9
+	active_workspace #031529 #031529 #d0d9d9
+	inactive_workspace #031529 #031529 #d0d9d9
+	urgent_workspace #031529 #b08500 #d0d9d9
+	}
+}
+
+# colour of 				border	backgr	text	indicat	child_border
+client.focused 				#322640 #d12f2c	#d0d9d9 #696ebf #9225cc
+client.focused_inactive 	#d0d9d9 #916e01 #d0d9d9 #263640	#322640
+client.unfocused 			#d0d9d9 #b08500 #d0d9d9 #263640 #322640
+client.urgent 				#263640 #b08500 #d0d9d9 #263640 #322640
+client.placeholder 			#263640 #b08500 #d0d9d9 #263640 #322640
+client.background 			#263640
+
+# window rules, you can find the window class using xprop
+for_window [class=Eog|Sxiv|feh|mpv|Vlc|File-roller|Xarchiver] floating enable
+for_window [class=Eog|Sxiv|feh|mpv|Vlc|File-roller|Xarchiver] focus
+for_window [class=".*"] border pixel 6
+hide_edge_borders smart
+gaps inner 12
+smart_gaps on

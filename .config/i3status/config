@@ -1,0 +1,96 @@
+general {
+	output_format = "i3bar"
+	colors = false
+	markup = pango
+	interval = 5
+}
+
+// order += "disk /"
+// order += "load"
+// order += "cpu_temperature 1"
+// order += "wireless wlp2s0"
+// order += "cpu_usage"
+// order += "memory"
+order += "ethernet enp7s0"
+order += "volume master"
+// order += "battery 0"
+order += "time"
+// order += "read_file uptime"
+
+disk "/" {
+//	format = "<span background='#80ef80'>  </span><span background='#322640' color='#ffffff'>  %free (%avail)/ %total  </span>"
+	format = "<span background='#80ef80'>  </span><span background='#322640' color='#ffffff'>  %avail (%percentage_avail) / %total  </span>"
+	low_threshold = 20
+//	format_below_threshold = "<span background='#e84b3d'>  </span><span background='#322640' color='#ffffff'>  %free (%avail)/ %total  </span>"
+	format_below_threshold = "<span background='#e84b3d'>  </span><span background='#322640' color='#ffffff'>  %avail (%percentage_avail) / %total  </span>"
+	threshold_type = percentage_free
+}
+
+load {
+	format = "<span background='#b08500'>    </span><span background='#322640' color='#ffffff'>  %5min Load  </span>"
+}
+
+cpu_usage {
+	format = "<span background='#80ef80'>  </span><span background='#322640' color='#ffffff'>  %usage  </span>"
+	max_threshold = 80
+	degraded_threshold = 65
+	format_above_threshold = "<span background='#e84b3d'>  </span><span background='#322640' color='#ffffff'>  %usage  </span>"
+	format_above_degraded_threshold = "<span background='#ffce1b'>  </span><span background='#322640' color='#ffffff'>  %usage  </span>"
+}
+
+memory {
+//	format = "<span background='#80ef80'>  </span><span background='#322640' color='#ffffff'>  S:%percentage_shared | F:%percentage_free | A:%available %percentage_available (U:%used %percentage_used) / %total  </span>"
+	format = "<span background='#80ef80'>  </span><span background='#322640' color='#ffffff'>  %used (%percentage_used) / %total  </span>"
+	unit = auto
+	decimals = 2
+	threshold_degraded = 20%
+//	format_degraded = "<span background='#e84b3d'>  </span><span background='#322640' color='#ffffff'>  S:%percentage_shared | F:%percentage_free | A:%available %percentage_available (U:%used %percentage_used) / %total  </span>"
+	format_degraded = "<span background='#e84b3d'>  </span><span background='#322640' color='#ffffff'>  %used (%percentage_used) / %total  </span>"
+}
+
+
+cpu_temperature 0 {
+	format = "<span background='#d12f2c'>    </span><span background='#322640' color='#ffffff'>  %degrees °C  </span>"
+	path = "/sys/class/thermal/thermal_zone0/temp"
+}
+
+ethernet enp7s0 {
+//	format_up = "<span background='#ed80e9'>    </span><span background='#322640' color='#ffffff'>  %ip (%speed) </span>"
+	format_up = "<span background='#ed80e9'>  <span  rise='-2pt'></span>  </span><span background='#322640' color='#ffffff'>  Up </span>"
+	format_down = "<span background='#ed80e9'>  <span  rise='-2pt'></span>  </span><span background='#322640' color='#ffffff'>  Down  </span>"
+}
+
+wireless wlp2s0 {
+	format_up = "<span background='#289c93'>    </span><span background='#322640' color='#ffffff'>  %essid  </span>"
+	format_down = "<span background='#289c93'>    </span><span background='#322640' color='#ffffff'>  Down  </span>"
+}
+
+volume master {
+	format = "<span background='#696ebf'>  <span  rise='-2pt'></span>  </span><span background='#322640' color='#ffffff'>  %volume  </span>"
+	format_muted = "<span background='#696ebf'>  <span  rise='-2pt'></span>  </span><span background='#322640' color='#ffffff'>  Muted  </span>"
+	device = "default"
+	mixer = "Master"
+	mixer_idx = 0
+}
+
+battery 0 {
+	last_full_capacity = true
+	format = "<span background='#819400'>  %status  </span><span background='#322640' color='#ffffff'>  %percentage  </span>"
+	format_down = "No Battery"
+	status_chr = ""
+	status_bat = ""
+	status_unk = ""
+	status_full = ""
+	path = "/sys/class/power_supply/BAT%d/uevent"
+	low_threshold = 10
+	integer_battery_capacity = true
+}
+
+time {
+	format = "<span background='#2587cc'>  <span  rise='-2pt'></span>  </span><span background='#322640' color='#ffffff'> (%a)  %b %d, %Y at %H:%M:%S  </span>"
+}
+
+read_file uptime {
+	path = "/proc/uptime"
+	format = "<span background='#2587cc'>    </span><span background='#322640' color='#ffffff'> %title: %content </span>"
+}
