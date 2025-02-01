@@ -4,7 +4,7 @@ This contains i3 config and some common packages.
 ## Installation
 
 ```shell
-sudo pacman -Syu i3-wm i3blocks i3lock i3status dunst ranger rofi kitty vim scrot nautilus cliphist
+sudo pacman -Syu i3-wm i3blocks i3lock i3status dunst ranger rofi kitty vim nvim scrot nautilus cliphist
 ```
 
 ## Packages
